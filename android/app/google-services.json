@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "721428916276",
+    "firebase_url": "https://antwerp-jiu-jitsu.firebaseio.com",
+    "project_id": "antwerp-jiu-jitsu",
+    "storage_bucket": "antwerp-jiu-jitsu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721428916276:android:66d6f39ff5f5ebe4700261",
+        "android_client_info": {
+          "package_name": "com.antwerpjiujitsu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721428916276-1mb8frhhi5td01lsviuhvao7390ufmd7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBA2PMZFzm-PrpKnjhewbM0uuRUBdU76M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721428916276-1mb8frhhi5td01lsviuhvao7390ufmd7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
