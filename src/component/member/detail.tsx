@@ -1,8 +1,7 @@
-import {Document} from 'firestorter';
-import {pickBy, set} from 'lodash';
+import {set} from 'lodash';
 import {observer} from 'mobx-react-lite';
 import React, {useState} from 'react';
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import styled from 'styled-components/native';
 
@@ -28,7 +27,7 @@ const PrimaryButton = styled(Button)`
 `;
 
 interface MemberDetailProps {
-  member: Member;
+  member?: Member;
 }
 
 const MemberDetail = observer<MemberDetailProps>(props => {
@@ -36,7 +35,7 @@ const MemberDetail = observer<MemberDetailProps>(props => {
 
   const {member} = props;
 
-  const [data, setData] = useState<MemberData>(member.data);
+  const [data, setData] = useState<any>(member ? member.data : {});
 
   const {
     firstName,
@@ -51,6 +50,14 @@ const MemberDetail = observer<MemberDetailProps>(props => {
     nationality,
     birthdate,
   } = data;
+
+  Navigation.mergeOptions('MemberDetail', {
+    topBar: {
+      title: {
+        text: 'Member Detail',
+      },
+    },
+  });
 
   return (
     <ScrollView>
@@ -121,11 +128,11 @@ const MemberDetail = observer<MemberDetailProps>(props => {
 const saveMember = (data: MemberData, store: Store, member?: Member) => () => {
   if (member) {
     member.update(data).then(() => {
-      Navigation.pop('MemberDetail');
+      Navigation.popTo('MemberList');
     });
   } else {
     store.data.members.add(data).then(() => {
-      Navigation.pop('MemberDetail');
+      Navigation.popTo('MemberList');
     });
   }
 };

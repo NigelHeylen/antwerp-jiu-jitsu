@@ -1,16 +1,17 @@
 import firestore from '@react-native-firebase/firestore';
 import {observer} from 'mobx-react-lite';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Text,
   FlatList,
   StyleSheet,
   SafeAreaView,
   View,
-  Button,
   TouchableHighlight,
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
+import Icon from 'react-native-vector-icons/Feather';
+import styled from 'styled-components/native';
 
 import {useStore} from '../../context';
 import Member from '../../store/data/member';
@@ -59,10 +60,15 @@ const AddAttendee = observer<ButtonProps>(props => {
   const attendance = member.sessions.some(s => s.id === currentSession.id);
 
   return (
-    <Button
+    <Icon.Button
+      backgroundColor="transparent"
+      name={attendance ? 'user-check' : 'user'}
+      iconStyle={{
+        marginRight: 0,
+      }}
+      borderRadius={0}
       color={attendance ? 'green' : 'blue'}
-      title="Click"
-      onPress={onAdd}
+      onPress={() => onAdd()}
     />
   );
 });
@@ -88,6 +94,32 @@ const addToSession = (session: Session, member: Member) => () => {
   }
 };
 
+const MemberShipContainer = styled.View<{ended: boolean}>`
+  background-color: ${props => (props.ended ? 'tomato' : 'mediumseagreen')};
+  padding: 1px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+`;
+
+const MemberShipLabel = styled.View`
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 95%;
+  background-color: white;
+`;
+
+const MemberShipText = styled.Text<{ended: boolean}>`
+  font-size: 16px;
+  color: ${props => (props.ended ? 'tomato' : 'mediumseagreen')};
+  text-align: center;
+`;
+
 const MembershipEnd = observer<{membership: Membership}>(props => {
   const {membership} = props;
 
@@ -103,15 +135,19 @@ const MembershipEnd = observer<{membership: Membership}>(props => {
   console.log(membership.type);
 
   return (
-    <Text style={ended ? styles.ended : styles.notEnded}>
-      {membership.type === 'recurring'
-        ? membership.endDate.toDate().toISOString()
-        : membership.classesLeft}
-    </Text>
+    <MemberShipContainer ended>
+      <MemberShipLabel>
+        <MemberShipText ended>
+          {membership.type === 'recurring'
+            ? membership.endDate.toDate().toLocaleDateString()
+            : membership.classesLeft}
+        </MemberShipText>
+      </MemberShipLabel>
+    </MemberShipContainer>
   );
 });
 
-const memberDetail = (member: Member) => () => {
+const memberDetail = (member?: Member) => () => {
   Navigation.push('HomeView', {
     component: {
       id: 'MemberDetail',
@@ -158,6 +194,37 @@ const MemberList = observer<MemberListProps>(props => {
   const {session} = props;
   const {data} = useStore();
   const {members, currentSession} = data;
+
+  Navigation.mergeOptions('MemberList', {
+    topBar: {
+      title: {
+        text: 'Member List',
+      },
+      rightButtons: session
+        ? []
+        : [
+            {
+              id: 'new',
+              text: 'New',
+            },
+          ],
+    },
+  });
+
+  useEffect(() => {
+    const navigationButtonEventListener = Navigation.events().registerNavigationButtonPressedListener(
+      async ({buttonId}) => {
+        switch (buttonId) {
+          case 'new':
+            memberDetail(undefined)();
+            break;
+        }
+      },
+    );
+    return function cleanup() {
+      navigationButtonEventListener.remove();
+    };
+  }, [members]);
 
   return (
     <SafeAreaView style={styles.container}>
