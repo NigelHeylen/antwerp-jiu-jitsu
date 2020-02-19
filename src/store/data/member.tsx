@@ -1,48 +1,96 @@
-import { Document, Collection } from "firestorter";
-import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import Session from "./session";
-import Membership from "./membership";
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+import {Document} from 'firestorter';
 
-interface Data {
-  firstName: string
-  lastName: string
-  sessions: FirebaseFirestoreTypes.DocumentReference[]
-  memberships: FirebaseFirestoreTypes.DocumentReference[]
-  currentMembership: FirebaseFirestoreTypes.DocumentReference
+import Membership from './membership';
+import Session from './session';
+
+export interface MemberData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  street: string;
+  houseNumber: string;
+  areaCode: string;
+  birthdate: string;
+  bus: string;
+  city: string;
+  country: string;
+  nationality: string;
+  sessions: FirebaseFirestoreTypes.DocumentReference[];
+  currentMembership: FirebaseFirestoreTypes.DocumentReference;
 }
 
-class Member extends Document<Data> {
+class Member extends Document<MemberData> {
   private _sessions: Session[] = [];
-  private _memberships: Membership[] = [];
 
-  get firstName(){
-    return this.data.firstName
+  get firstName() {
+    return this.data.firstName;
   }
 
-  get lastName(){
-    return this.data.lastName
+  get lastName() {
+    return this.data.lastName;
   }
 
-  get fullName(){
-    return `${this.firstName} ${this.lastName}`
+  get email() {
+    return this.data.email;
   }
 
-  get sessions(){
-    if (this._sessions.length !== (this.data.sessions ? this.data.sessions.length : 0))
+  get phone() {
+    return this.data.phone;
+  }
+
+  get street() {
+    return this.data.street;
+  }
+
+  get city() {
+    return this.data.city;
+  }
+
+  get houseNumber() {
+    return this.data.houseNumber;
+  }
+
+  get areaCode() {
+    return this.data.areaCode;
+  }
+
+  get birthdate() {
+    return this.data.birthdate;
+  }
+
+  get bus() {
+    return this.data.bus;
+  }
+
+  get country() {
+    return this.data.country;
+  }
+
+  get nationality() {
+    return this.data.nationality;
+  }
+
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+
+  get sessions() {
+    if (
+      this._sessions.length !==
+      (this.data.sessions ? this.data.sessions.length : 0)
+    ) {
       this._sessions = (this.data.sessions || []).map(ref => new Session(ref));
+    }
     return this._sessions;
   }
 
-  get memberships(){
-    if (this._memberships.length !== (this.data.memberships ? this.data.memberships.length : 0))
-      this._memberships = (this.data.memberships || []).map(ref => new Membership(ref));
-    return this._memberships;
-  }
-
-  get currentMembership(){
-    if(this.data.currentMembership) return new Membership(this.data.currentMembership)
-    else return undefined
+  get currentMembership() {
+    if (this.data.currentMembership)
+      return new Membership(this.data.currentMembership);
+    return undefined;
   }
 }
 
-export default Member
+export default Member;

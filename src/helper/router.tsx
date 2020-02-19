@@ -1,14 +1,14 @@
+import {Navigation} from 'react-native-navigation';
 
-import { Navigation } from "react-native-navigation";
+import HomeView from '../component/home/view';
+import MemberDetail from '../component/member/detail';
+import MemberList from '../component/member/list';
 
-import HomeView from "../component/home/view"
-import MemberList from "../component/member/list"
-
-const register = async() => {
-
-  console.log("register component")
-  Navigation.registerComponent("HomeView", () => HomeView)
-  Navigation.registerComponent("MemberList", () => MemberList)
+const register = async () => {
+  console.log('register component');
+  Navigation.registerComponent('HomeView', () => HomeView);
+  Navigation.registerComponent('MemberList', () => MemberList);
+  Navigation.registerComponent('MemberDetail', () => MemberDetail);
 
   await Navigation.setRoot({
     root: {
@@ -16,18 +16,16 @@ const register = async() => {
         children: [
           {
             component: {
-              name: "HomeView",
-              id: "HomeView"
-            }
-          }
-        ]
-      }
-   
-    }
+              name: 'HomeView',
+              id: 'HomeView',
+            },
+          },
+        ],
+      },
+    },
   });
-}
-
+};
 
 export default {
-  register
+  register,
 };

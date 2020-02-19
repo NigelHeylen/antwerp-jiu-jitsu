@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import RootStore from "../store/root";
+import RootStore from '../store/root';
 
 export interface AntwerpJJContext {
   store: RootStore;
@@ -8,7 +8,7 @@ export interface AntwerpJJContext {
 
 export const createContext = (store: RootStore) => {
   try {
-    Context = React.createContext({ store });
+    Context = React.createContext({store});
   } catch (error) {
     throw new Error(error);
   }

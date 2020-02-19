@@ -1,19 +1,15 @@
-import RootStore from "./store/root";
-import { createContext } from "./context";
-import { Navigation } from "react-native-navigation";
-import router from "./helper/router";
+import {Navigation} from 'react-native-navigation';
 
+import {createContext} from './context';
+import router from './helper/router';
+import RootStore from './store/root';
 
-
-const start = async () =>{
-  console.log("start")
+const start = async () => {
   Navigation.events().registerAppLaunchedListener(async () => {
-
-    console.log("lol")
-  const store = new RootStore()
-  createContext(store)
-  await router.register()
-  })
+    const store = new RootStore();
+    createContext(store);
+    await router.register();
+  });
 };
 
-export default { start };
+export default {start};
